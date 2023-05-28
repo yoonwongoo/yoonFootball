@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="notification">
+<body>
+    <div class="position-fixed notification-modal-box"
+    style="display:none; width:100%; height:100%; top:0; left:0; bottom:0; right:0; background-color : rgba(0,0,0,0.5); z-index:20;">
+        <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div id="notification_modal" class="rounded-3 bg-white d-flex flex-column"
+            style="width:85%; max-width:600px; height:70%;">
+
+            <div class="noti-header border-bottom p-3 d-flex justify-content-between align-items-center"
+            style="width:100; height:50px;">
+            <span><b>알림</b></span>
+            <span class="notification-modal-close" style="cursor:pointer;" ><i class="fa-solid fa-x"></i></span>
+            </div>
+            <!--알림 컨텐츠-->
+            <div class="noti-content" style="height:100%; width:100%; overflow-y:scroll;">
+
+            </div>
+
+        </div>
+    </div>
+    </div>
+</body>
+<script>
+ /*알림 모달 열기*/
+    $("#notification").click(function(){
+       $(".notification-modal-box").css("display","block");
+
+       $.ajax({
+            url:"/api/notification",
+            type:"get",
+            contentType:"application/json; utf-8"
+
+       }).done(res=>{
+            console.log(res);
+            $(".noti-content").html(notificationListHtml(res.body));
+       }).fail(err=>{
+            console.log(err);
+       })
+    });
+
+
+    
+    /*알림 모달 닫기*/
+    $(".notification-modal-close").click(function(){
+       $(".notification-modal-box").css("display","none");
+    });
+
+    /*알림 리스트 HTML*/
+    function notificationListHtml(notification){
+
+    let notificationHtml=``;
+
+    for(var i=0; i<notification.length; i++){
+    let notificationList = notification[i];
+    let notificationId = notificationList.notificationId;
+    let title = notificationList.title;
+    let message = notificationList.message;
+    let createdDate = notificationList.createdDate;
+
+
+    notificationHtml+=`
+        <div class="border-bottom p-2">
+            <div>${title}</div>
+            <div>${message}</div>
+            <div>${createdDate}</div>
+        </div>
+    `
+
+    }
+    return notificationHtml;
+
+    }
+
+
+    $(".noti-content").on("scroll",function(){
+       var scrollTop = $(this).scrollTop();
+        var innerHeight = $(this).innerHeight();
+        var scrollHeight = $(this).prop('scrollHeight');
+        if (Math.ceil(scrollTop+innerHeight) >= scrollHeight) {
+
+
+
+        }
+    });
+
+
+
+
+
+
+
+    </script>
+</th:block>
+</html>

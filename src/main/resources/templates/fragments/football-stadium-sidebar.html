@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<div th:fragment="football-match-sidebar (side)" class="list-group">
+
+    <a class="list-group-item list-group-item-action" th:classappend="${side =='enroll'} ? active" th:href="@{/admin/football-stadium}">구장등록</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${side =='list'} ? active" th:href="@{/admin/football-stadium/list}" >구장목록</a>
+
+</div>
+
+</html>

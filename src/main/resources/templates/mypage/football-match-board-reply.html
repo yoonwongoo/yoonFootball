@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::header"></head>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+        <div class="py-3 text-center">
+               <h2>내가 쓴 글 & 댓글</h2>
+        </div>
+        <div class="row justify-content-center p-3">
+            <div th:replace="/fragments/my-page-football-match-board-tab.html::my-page-football-match-board-tab (tab='footballMatchBoardReply')">
+            </div>
+
+            <div class="col-12 my-3" style="max-width:800px;">
+                <th:block th:each="list :${myFootballReplyList}" th:if="${!#lists.isEmpty(myFootballReplyList)}">
+                    <a class="border-bottom my-1 p-2"
+                       th:href="@{/football-match-board/{id} (id=${list.footballMatchBoardId})}"
+                    style="min-width:300px;">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span class="text-muted">경기장 :</span>
+                                <span th:text="${list.location}"></span>
+                            </div>
+                            <div style="font-size:5px;">
+                                <span>작성시간</span>
+                                <span class="text-primary" th:text="${{list.createdDate}}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-muted">경기 일자 : </span>
+                            <span th:text="|${list.matchDay}/|"></span>
+                            <span th:text="|${list.startTime}~|"></span>
+                            <span th:text="|${list.endTime}|"></span>
+                            <span class="text-primary">경기글</span>
+                            <span>에 댓글을 작성하였습니다</span>
+                        </div>
+                        <div>
+                            <span class="text-muted">댓글 내용: </span>
+                            <span class="text-muted" th:text="|'${list.comment}'|" ></span>
+
+                        </div>
+
+                    </a>
+                </th:block>
+                <th:block th:unless="${!#lists.isEmpty(myFootballReplyList)}">
+                    <p class="text-center">작성한 댓글이 없습니다</p>
+                </th:block>
+            </div>
+
+            <div class="col-12" th:if="${!#lists.isEmpty(myFootballReplyList)}">
+                <ul class="pagination pagination justify-content-center">
+
+                    <li class="page-item" th:if="${!isFirst}">
+                        <a class="page-link" th:href="@{/my-page/football-match-board/reply(page=0)}"> << </a>
+                    </li>
+
+
+                <th:block th:each="page :${#numbers.sequence(startPage,lastPage)}">
+
+                    <li class="page-item active" th:if="${page==currentPage}">
+                       <a class="page-link" th:text="${page}" th:href="@{/my-page/football-match-board/reply(page=${page-1})}"></a>
+                    </li>
+
+
+                    <li class="page-item" th:if="${page!=currentPage}">
+                        <a class="page-link" th:text="${page}" th:href="@{/my-page/football-match-board/reply(page=${page-1})}"></a>
+                    </li>
+                </th:block>
+
+
+                <li class="page-item" th:if="${!isLast}">
+                    <a class="page-link" th:href="@{/my-page/football-match-board/reply(page=${totalLastPage})}"> >> </a>
+                </li>`
+
+
+                </ul>
+            </div>
+
+
+        </div>
+    </main>
+
+
+
+</div>
+
+
+
+
+</body>
+</html>

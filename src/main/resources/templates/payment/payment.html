@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::header"></head>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+
+<div class="container">
+    <main class="p-5">
+        <div class="row">
+            <div class="col-12">
+                <h5>충전하실 금액</h5>
+                <ul class="w-100" style="text-align:center;">
+                    <li class="d-inline-block mb-1 " style="width:31%">
+                        <input type="radio" class="btn-check" id="point1" name="point" autocomplete="off" value="2000">
+                        <label class="btn btn-outline-primary w-100 "  for=point1>2000원</label>
+                    </li>
+                    <li class="d-inline-block mb-1 " style="width:31%">
+                        <input type="radio" class="btn-check" id="point2" name="point" autocomplete="off" value="5000">
+                        <label class="btn btn-outline-primary w-100" for="point2">5000원</label>
+                    </li>
+                    <li class="d-inline-block mb-1 " style="width:31%">
+                        <input type="radio" class="btn-check" id="point3" name="point" autocomplete="off" value="10000">
+                        <label class="btn btn-outline-primary w-100" for="point3">10000원</label>
+                    </li>
+                    <li class="d-inline-block mb-1 " style="width:31%">
+                        <input type="radio" class="btn-check" id="point4" name="point" autocomplete="off" value="15000">
+                        <label class="btn btn-outline-primary w-100" for="point4">15000원</label>
+                    </li>
+                    <li class="d-inline-block mb-1 " style="width:31%">
+                        <input type="radio" class="btn-check" id="point5" name="point" autocomplete="off" value="20000">
+                        <label class="btn btn-outline-primary w-100" for="point5">20000원</label>
+                    </li>
+                    <li class="d-inline-block mb-1 " style="width:31%">
+                        <input type="radio" class="btn-check" id="point6" name="point" autocomplete="off" value="25000">
+                        <label class="btn btn-outline-primary w-100" for="point6">25000원</label>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="col-12">
+            </div>
+            <footer class="col-12 position-fixed w-100 bg-white p-3 " style="bottom:0px; left:0px;">
+                <button class="btn btn-primary w-100" id="payment" disabled>
+                    <span class="point"></span>
+                    <span>결제하기</span>
+                </button>
+            </footer>
+        </div>
+
+    </main>
+</div>
+
+
+
+<script type="text/javascript" src="/js/common.js"></script>
+<script>
+var point;
+
+$("input[name='point']").on("change",(e)=>{
+
+  point = $(e.target).val();
+  $(".point").text(point+"원");
+  $("#payment").attr("disabled",false);
+});
+
+/*결제요청*/
+<!--$("#payment").click(()=>{
+
+    $.ajax({
+        url:"/api/payment",
+        type:"post",
+        data:,
+        contentType:"application/json; charset=utf-8",
+        beforeSend:(xhr)=>{
+            xhr.setRequestHeader(header, token);
+            xhr.setRequestHeader("Accept","application/json");
+        }
+
+    }).done(res=>{
+       location.href=res.body.next_redirect_pc_url
+    }).fail(err=>{
+        console.log(err);
+    })
+
+
+})-->
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::header"></head>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+
+<div class="container">
+
+    <div class="row gx-0 justify-content-center p-4">
+
+      <div class="col-12 " style="height:100%; width:100%;">
+           <h4 th:text="${noticeCategory.value}">공지사항</h4>
+      </div>
+
+      <div class="col-12 p-3 bg-success rounded-3 my-3" style="height:100%; width:100%;">
+        <p class="text-white text-center">키워드로 검색해보세요 </p>
+        <div>
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="ex) 환불,정책...">
+        </div>
+      </div>
+
+      <div class="col-12">
+        <th:block th:unless="${#lists.isEmpty(noticeBoardList)}" th:each="list:${noticeBoardList}">
+            <div class="p-2 border-bottom my-2"style="width:100%;">
+                <a href="#" th:href="@{/notice/{id}  (id=${list.noticeBoardId})}">
+                <span th:text="${list.title}">게시글 제목</span>
+                </a>
+            </div>
+
+        </th:block>
+
+        <th:block th:if="${#lists.isEmpty(noticeBoardList)}">
+            <h4 class="text-center p-3 border">공지사항이 존재하지 않습니다</h4>
+        </th:block>
+      </div>
+        <div class="col-12 m-5" th:if="${!#lists.isEmpty(noticeBoardList)}">
+            <ul class="pagination pagination justify-content-center">
+                <li class="page-item" th:if="${!first}">
+                    <a class="page-link" th:text="<"></a>
+                </li>
+
+                <li class="page-item" th:classappend="${currentPage} == ${page} ? 'active'" th:each="page :${#numbers.sequence(startPage,lastPage)}">
+                     <a class="page-link" th:text="${page-1}"></a>
+                </li>
+
+                <li class="page-item" th:if="${!last}">
+                    <a class="page-link" th:text=">"></a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::header">
+</head>
+
+<body class="bg-light" >
+<nav th:replace="fragments/nav::nav (tab='footballSocialMatch')"></nav>
+    <div class="container">
+
+        <div class="row justify-content-center my-2 p-3">
+        <!--날짜 및 선택 nav바-->
+            <div class="col-12 d-flex ">
+                <div class="d-flex">
+                    <form  class="search_form" th:action="@{/football-social-match/list}" method="get">
+                        <input id="matchDay" name="matchDay" class="form-control" type="date" th:value="${matchDay}" >
+                    </form>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-12 p-3">
+              <div class="row">
+                <th:block th:each="list :${footballSocialMatchList}" th:if="${not #lists.isEmpty(footballSocialMatchList)}">
+
+                    <div class="col-12 border-bottom border-top bg-white m-1">
+                        <a th:href="@{/football-social-match/{id} (id=${list.id})}">
+                            <div class="p-2 d-flex justify-content-between">
+
+                                <div class="d-flex justify-content-between">
+                                    <div class="mx-3">
+                                        <div>
+                                            <span class="fw-bold" th:text="${list.matchDay} "></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted "  th:text="|${list.startTime} ~ ${list.endTime}|" style="font-size:12px;"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mx-5">
+                                        <div>
+                                            <span class="text-primary" th:text="${list.footballStadium.stadiumName}">구장이름</span>
+                                            <span th:text="${list.footballStadium.location}">구장위치</span>
+                                        </div>
+                                        <span class="text-warning">&bull;</span>
+                                        <span th:text="|모집인원 ${list.headCount} 명|" style="font-size:12px;">모집인원</span>
+                                        <span class="text-warning">&bull;</span>
+                                        <span th:text="|실력 ${list.skillLevel.value}|" style="font-size:12px;">매치실력</span>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="d-flex align-items-center justify-content-between" style="width:20%;">
+
+                                    <div class="badge bg-secondary"  th:unless="${list.accept}" >
+                                        <div th:text="모집완료"></div>
+                                        <div class="mt-1"  th:text="${list.participationFee} == '0' ? '무료' : |${list.participationFee}원|"></div>
+                                    </div>
+
+                                    <div class="badge bg-primary"  th:if="${list.accept}">
+                                        <div th:text="모집중"></div>
+                                        <div class="mt-1" th:text="${list.participationFee} == '0' ? '무료' : |${list.participationFee}원|"></div>
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+                </th:block>
+                <th:block th:unless="${not #lists.isEmpty(footballSocialMatchList)}">
+                    <div class="py-3 text-center border">
+                           <h2>등록된 소셜매치가 없습니다</h2>
+                     </div>
+
+                </th:block>
+
+
+
+              </div>
+         </div>
+
+    </div>
+
+<script>
+    $("#matchDay").change(()=>{
+            $(".search_form").submit();
+
+    })
+
+
+
+
+</script>
+</body>
+</html>

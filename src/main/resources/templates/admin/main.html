@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header.html::header"></head>
+<style>
+    .menu-name::after {
+        font-family:FontAwesome;
+        content:"\f054";
+        position:absolute;
+        right:30px;
+    }
+
+
+</style>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+
+        <div class="py-3 text-center">
+            <h2>관리자 PAGE</h2>
+        </div>
+
+    <!-- 프로필영역-->
+        <div class="profile-area border p-3 mb-4" style="max-width:600px; margin:0 auto;">
+            <div class="profile d-flex flex-wrap">
+                <div class="profile-left d-flex flex-fill flex-column align-items-center" >
+
+                    <div class="name">
+                        <b th:text="${member.name}">name</b>
+                        <span>관리자님 반갑습니다</span>
+                    </div>
+
+                </div>
+
+                <div class="profile-right d-flex flex-fill flex-column align-items-center">
+                    <div>오늘 등록된 매치 수</div>
+
+                </div>
+            </div>
+        </div>
+    <!-- 프로필영역 끝-->
+
+    <!-- 메뉴 영역-->
+        <div class="menu-area mb-4" style="max-width:600px; margin:0 auto;">
+           <div class="menu d-flex flex-column position-relative" >
+
+                <a class="d-flex align-items-center border p-2" th:href="@{/admin/member}">
+                    <i class="fa-solid fa-user "></i>
+                    <span class="menu-name ms-2">회원관리</span>
+                </a>
+
+                <a class="d-flex align-items-center border p-2" th:href="@{/admin/football-stadium}">
+                    <i class="fa-regular fa-futbol"></i>
+                    <span class="menu-name ms-2">구장 등록 및 관리</span>
+                </a>
+
+                <a class="d-flex align-items-center border p-2" th:href="@{/admin/notice}">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span class="menu-name ms-2">공지글 작성하기</span>
+                </a>
+                <a class="d-flex align-items-center border p-2" th:href="@{/admin/football-match/list}" >
+                    <i class="fa-regular fa-handshake"></i>
+                    <span class="menu-name ms-2">소셜매치 등록하기</span>
+                </a>
+
+           </div>
+        </div>
+
+    <!-- 메뉴 영역 끝-->
+     <div class="my-schedule"style="max-width:600px; margin:0 auto;">
+        <h5 class="text-primary">오늘 나의 일정</h5>
+        <div class="my-schedule-list">
+
+            <h5 class="py-3 text-center border" th:if="${#lists.isEmpty(mySocialMatchScheduleList)}"
+                th:text="'당일 매치가 없습니다.'" style="width:100%;">
+            </h5>
+
+
+            <div class="d-flex mb-1 border border-info p-1 bg-info bg-opacity-10 justify-content-between" th:unless="${#lists.isEmpty(mySocialMatchScheduleList)}" th:each="list:${mySocialMatchScheduleList}" style="width:100%; font-size:0.8em;">
+                <div class="d-flex">
+                    <div class="mx-2">
+                        <div class="fw-bold" th:text="${list.matchDay}">매치날짜</div>
+                        <div class="text-muted" th:text="|${list.startTime}~${list.endTime}|">시작,마감 시간</div>
+                    </div>
+
+                    <div class="mx-2">
+                        <div>
+                            <span class="text-primary" th:text="${list.footballStadium.stadiumName}"></span>
+                            <span th:text="${list.footballStadium.location}"></span>
+                        </div>
+                        <div>
+                            <span class="text-warning">&bull;</span>
+                            <span  th:text="|실력 ${list.skillLevel.value}|"></span>
+                            <span th:text="${list.headCount}"></span>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="mx-1" style="font-size:0.9em;">
+                   <button class="btn btn-outline-primary">매치취소</button>
+                </div>
+
+            </div>
+
+        </div>
+     </div>
+
+    </main>
+</div>
+<script type="text/javascript">
+$(function(){
+
+$(".logout").click(function(){
+    var token=$("meta[name=_csrf_token]").attr("content");
+    var header=$("meta[name=_csrf_header]").attr("content");
+
+    $.ajax({
+        url:"/api/logout",
+        type:"post",
+        beforeSend:function(xhr){
+            xhr.setRequestHeader(header,token);
+        }
+
+    }).done(res=>{
+        if(res.body.status=="OK"){
+            alert("로그아웃되었습니다");
+            location.href="/sign-in";
+        }
+
+    }).fail(err=>{
+        alert("일시적인 오류 발생");
+        location.href="/sign-in";
+    })
+});
+
+
+
+});
+
+</script>
+</body>
+</html>

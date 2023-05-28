@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html::header">
+
+</head>
+<body class="bg-light">
+
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+
+        <div class="py-3 text-center">
+            <h2>등록된 구장 및 수정하기</h2>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12" style="max-width:600px; margin-bottom:100px;">
+                <form class="football_stadium_modify_form" th:object="${footballStadium}">
+                <input type="hidden" th:id="footballStadiumId" name="footballStadiumId" th:value="*{id}">
+                <span class="text-muted"><small>(이미지를 클릭하여 변경하실 수 있습니다.)</small></span>
+
+                <div class="mb-3 mx-1" >
+                    <div class="border" id="img-box" style="height:50vh; width:100%;">
+                        <img th:src="@{/upload/{stadiumImageUrl} (stadiumImageUrl=*{stadiumImageUrl})}"
+                             style="width:100%; height:100%; object-fit: contain">
+                    </div>
+                    <input type="file" name="image" style="display:none;" id="image"/>
+
+                </div>
+
+                <div class="mb-3 mx-1">
+                    <label for="location" class="form-label" _msthash="2296580" _msttexthash="49286185">위치</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="location" name="location" th:value="*{location}" placeholder="위치를 검색해주세요"  readonly="true">
+                        <button class="btn btn-outline-secondary" type="button" id="kakaoMapSearch-openBtn">주소 검색</button>
+                    </div>
+                    <div class="error text-danger" id="location-err"></div>
+                </div>
+
+                <div class="mb-3 mx-1">
+                    <label for="locationStreet" class="form-label" _msthash="2296580" _msttexthash="49286185">도로명 주소</label>
+                    <input type="text" class="form-control" id="locationStreet" name="locationStreet" th:value="*{locationStreet}" readonly="true">
+                </div>
+
+                <div class="mb-3 mx-1">
+                    <label for="stadiumName" class="form-label" _msthash="2296580" _msttexthash="49286185">구장 이름</label>
+                    <input type="text" class="form-control" id="stadiumName" name="stadiumName" th:value="*{stadiumName}">
+                </div>
+
+
+                <div class="mb-3 mx-1">
+                      <label for="stadiumDetails" class="form-label">구장 상세내용</label>
+                      <textarea class="form-control" id="stadiumDetails" name="stadiumDetails" rows="5" placeholder="내용을 자세히 기재해주세요."
+                                cols="3" th:text="*{stadiumDetails}"  ></textarea>
+                </div>
+
+                <div class="mb-2 mx-1 d-flex" >
+                    <div class="w-100 me-1">
+                        <label for="availableStartTime" class="form-label">구장 오픈시간</label>
+                        <input type="time" class="form-control" id="availableStartTime" name="availableStartTime" th:value="*{availableStartTime}">
+                    </div>
+                    <div class="w-100">
+                        <label for="availableEndTime" class="form-label">구장 마감시간</label>
+                        <input type="time" class="form-control" id="availableEndTime" name="availableEndTime" th:value="*{availableEndTime}">
+                    </div>
+                </div>
+
+
+
+                <div class="mb-3 mx-1 d-flex flex-column">
+                    <h6 class="fw-bold">구장 편의시설</h6>
+
+
+                    <div class="d-flex my-2">
+                        <div class="me-4">
+                            <i class="fa-solid fa-shower"></i>
+                            <span>샤워장</span>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="ableToShower" id="ableToShower1" th:value="true" th:field="*{ableToShower}">
+                            <label class="form-check-label" for="ableToShower1">O</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="ableToShower" id="ableToShower2" th:value="false" th:field="*{ableToShower}">
+                            <label class="form-check-label" for="ableToShower2">X</label>
+                        </div>
+                    </div>
+
+
+                <div class="d-flex my-2">
+                    <div class="me-4">
+                    <i class="fa-solid fa-car"></i>
+                    <span>주차장</span>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ableToParking" id="ableToParking1" th:value="true" th:field="*{ableToParking}">
+                        <label class="form-check-label" for="ableToParking1">O</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ableToParking" id="ableToParking2" th:value="false" th:field="*{ableToParking}">
+                        <label class="form-check-label" for="ableToParking2">X</label>
+                    </div>
+                </div>
+
+                <div class="d-flex my-2">
+                    <div class="me-4">
+                        <i class="fa-solid fa-shoe-prints"></i>
+                        <span>풋살화 대여</span>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ableToRentalShoes" id="ableToRentalShoes1" th:value="true" th:field="*{ableToRentalShoes}">
+                        <label class="form-check-label" for="ableToRentalShoes1">O</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ableToRentalShoes" id="ableToRentalShoes2" th:value="false"  th:field="*{ableToRentalShoes}">
+                        <label class="form-check-label" for="ableToRentalShoes2">X</label>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+                </form>
+            </div>
+            <footer class="col-12 position-fixed w-100 bg-white p-3 d-flex" style="bottom:0px; left:0px;">
+                <button class="btn btn-primary w-100 mx-2" id="football_stadium_modify">수정하기</button>
+                <button class="btn btn-secondary w-100 mx-2" id="football_stadium_remove">삭제하기</button>
+            </footer>
+        </div>
+
+
+
+    </main>
+
+    <th:block th:replace="fragments/kakao-map-search.html::kakao-map-search"></th:block>
+
+</div>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/footballMatchBoard.js"></script>
+<script type="text/javascript" src="/js/footballStadiumModify.js"></script>
+
+
+</body>
+</html>

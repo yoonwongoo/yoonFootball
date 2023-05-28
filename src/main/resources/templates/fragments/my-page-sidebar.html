@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<div th:fragment="my-page-sidebar (side)" class="list-group">
+
+    <a class="list-group-item list-group-item-action" th:classappend="${side =='account'} ? active" th:href="@{/my-page/account}">내 계정</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${side =='password'} ? active" th:href="@{/my-page/account/password}" >비밀번호 변경</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${side =='email'} ? active" th:href="@{/my-page/account/email}" >이메일 변경</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${side =='notification'} ? active" th:href="@{/my-page/account/notification}" >알림 설정</a>
+
+</div>
+
+</html>

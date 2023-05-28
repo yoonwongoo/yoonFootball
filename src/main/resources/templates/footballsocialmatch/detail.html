@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/header.html::header"></head>
+
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+
+  <main class="p-5" th:object="${footballSocialMatch}">
+
+    <div class="row gx-2"  style="min-width:300px;" >
+
+
+      <div class="col-12">
+        <input type="hidden" id="locationStreet" name="locationStreet" th:value="*{footballStadium.locationStreet}">
+        <input type="hidden" id="footballSocialMatchId" name="footballSocialMatchId" th:value="*{id}">
+        <input type="hidden" id="participationFee" name="participationFee" th:value="*{participationFee}">
+        <div style="width:100%; height:40vh;">
+          <img th:src="@{/upload/{imgUrl} (imgUrl=${footballSocialMatch.footballStadium.stadiumImageUrl})}" class="img-fluid w-100 h-100" >
+        </div>
+
+      </div>
+      <!--left Area 매치 정보 -->
+      <div class="col-sm-5 h-100  sticky-top mb-3">
+
+        <div class="bg-white p-2 border border-2">
+
+            <div>
+              <span class="fw-bold" th:text="*{matchDay}">경기날짜</span>
+              <span th:text="|(*{startTime} ~|">경기시작시간</span>
+              <span th:text="|*{endTime})|">경기마감시간</span>
+            </div>
+
+            <div class="text-primary" th:text="*{footballStadium.location}">주소이름</div>
+            <div style="font-size:0.8em;" th:text="*{footballStadium.locationStreet}">도로명주소</div>
+
+            <div class="border-bottom pb-3">
+              <span class="badge bg-secondary" style="cursor:pointer">도로명 주소복사</span>
+              <span class="badge bg-secondary map" style="cursor:pointer">지도 보기</span>
+            </div>
+
+            <div class="d-flex border-top pt-3 justify-content-between">
+              <div>
+                <span class="text-muted" style="font-size:0.9em;" th:text="참가비용"></span>
+                <span class="fw-bold participationFee" th:text="|*{participationFee}원|">참가비용</span>
+              </div>
+
+              <button class="btn btn-primary enroll" th:if="*{accept}">신청하기</button>
+              <button class="btn btn-secondary" th:unless="*{accept}" disabled>마감</button>
+            </div>
+
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- right Area-->
+      <div class="col-sm-7">
+
+        <div class="bg-white p-2 mb-3">
+
+          <div class="d-flex align-items-center">
+            <span class="badge bg-secondary">매치 관리자</span>
+            <span class="ms-1" style="font-size:0.8em;"th:text="|*{member.name} 매니저가 진행해요!|"></span>
+          </div>
+
+        </div>
+
+
+        <div class="bg-white p-2 mb-3">
+          <h5 class="text-center text-success">매치정보</h5>
+          <ul>
+            <li class="d-inline-block p-1" style="width:48%;">
+              <div style="font-size:0.8em;">
+                 <i class="bi bi-star-half"></i>
+                 <span>매치 평균 실력</span>
+                 <span class="fw-bold" th:text="*{skillLevel.value}">매치실력</span>
+               </div>
+            </li>
+
+            <li class="d-inline-block p-1" style="width:48%;">
+              <div style="font-size:0.8em;">
+                 <i class="bi bi-people-fill"></i>
+                 <span>매치 인원 수</span>
+                 <span class="fw-bold" th:text="*{headCount}">매치 인원 수</span>
+               </div>
+            </li>
+
+            <li class="d-inline-block p-1" style="width:48%;">
+              <div style="font-size:0.8em;">
+                <i class="fa-regular fa-futbol"></i>
+                <span>착의</span>
+                <span class="fw-bold">운동화/풋살화</span>
+              </div>
+            </li>
+
+            <li class="d-inline-block p-1" style="width:48%;">
+              <div style="font-size:0.8em;">
+                <i class="bi bi-asterisk"></i>
+                <span>경기방식</span>
+                <span class="fw-bold" th:text="|*{headCount/2} vs *{headCount/2}|">경기방식</span>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="bg-white p-2 mb-3">
+          <h5 class="text-center text-success">경기장 정보</h5>
+
+          <ul class="border-bottom pb-2">
+            <li class="d-inline-block p-1" style="width:48%;">
+              <div style="font-size:0.8em;">
+                <i class="fa-solid fa-shower"></i>
+                <span th:if="*{footballStadium.isAbleToShower}" th:text="샤워실"></span>
+                <span th:unless="*{footballStadium.isAbleToShower}" class="text-decoration-line-through"  th:text="샤워실"></span>
+              </div>
+            </li>
+            <li class="d-inline-block p-1" style="width:48%;">
+              <div style="font-size:0.8em;">
+                <i class="fa-solid fa-car"></i>
+                <span th:if="*{footballStadium.isAbleToParking}" th:text="주차장"></span>
+                <span th:unless="*{footballStadium.isAbleToParking}" class="text-decoration-line-through" th:text="주차장"></span>
+              </div>
+            </li>
+            <li class="d-inline-block p-1" style="width:48%;">
+              <div style="font-size:0.8em;">
+                <i class="fa-solid fa-shoe-prints"></i>
+                <span th:if="*{footballStadium.isAbleToRentalShoes}" th:text="풋살화대여"></span>
+                <span th:unless="*{footballStadium.isAbleToRentalShoes}" class="text-decoration-line-through" th:text="풋살화대여"></span>
+              </div>
+            </li>
+          </ul>
+          <!--구장 상세내용 및 특이사항-->
+          <div>
+            <h6 class="fw-bold text-center">구장 사용 및 특이사항</h6>
+            <div>
+              <pre th:text="*{footballStadium.stadiumDetails}">
+
+              </pre>
+
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div class="bg-white p-2 mb-3">
+
+
+          <div class="accordion  accordion-flush" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header " id="panelsStayOpen-headingOne">
+                <button class="accordion-button bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                  <h5 class="text-center text-success">경기 진행 및 취소 규정</h5>
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                  <ul class="list-group list-group-flush mb-2" style="font-size:0.8em;">
+                    <h6 class="fw-bold">경기방식</h6>
+                    <li class="list-group-item ps-0">
+                      <span>모든 파울은 사이드라인에서 킥인</span>
+                    </li>
+                    <li class="list-group-item ps-0">
+                       <span>골키퍼에게 백패스 가능. 손으로는 잡으면 안돼요</span>
+                    </li>
+                    <li class="list-group-item ps-0">
+                      <span>사람을 향한 태클 금지</span>
+                    </li>
+                  </ul>
+
+                  <ul class="list-group list-group-flush " style="font-size:0.8em;">
+                    <h6 class="fw-bold">진행방식</h6>
+                    <li class="list-group-item ps-0">
+                      <span>풋살화와 개인 음료만 준비하세요</span>
+                    </li>
+                    <li class="list-group-item ps-0">
+                       <span>매니저가 경기 진행을 도와드려요</span>
+                    </li>
+                    <li class="list-group-item ps-0">
+                      <span>골키퍼와 휴식을 공평하게 돌아가면서 해요</span>
+                    </li>
+                    <li class="list-group-item ps-0">
+                      <span>친구끼리 와도 팀 실력이 맞지 않으면 다른 팀이 될 수 있어요</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+        <div>
+
+        <div class="bg-white p-2 mb-3">
+        </div>
+
+
+      </div>
+
+
+
+      <!--지도보기 모달-->
+      <div id="map" class="position-fixed" style="width:100%;height:100%; top:100%; left:0; bottom:0; right:0; transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1); z-index:1021;">
+        <div class="position-absolute bg-light bg-opacity-50 align-items-center w-100 d-flex justify-content-between " style="height:64px; z-index:2;">
+          <div class="mx-3">
+            <span th:text="${footballSocialMatch.footballStadium.locationStreet}">지도위치</span>
+          </div>
+          <div class="mx-3">
+            <i class="fa-solid fa-xmark kakaoMap-closeBtn" style=" cursor:pointer"></i>
+          </div>
+        </div>
+      </div>
+
+      <!--결제모달-->
+      <div id="pay-modal" class="position-fixed d-flex align-items-center justify-content-center" style="width:100%; height:100%; top:100%; left:0; bottom:0; right:0; transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1); z-index:1022;">
+        <div class="bg-white position-relative border border-2 rounded-top" style="width:50%;overflow:hidden; height:70%">
+          <div class="bg-light d-flex justify-content-between align-items-center border-bottom p-2">
+              <span><b>결제</b></span>
+              <span class="pay-modal-closeBtn" style="cursor:pointer;"><i class="bi bi-x-lg"></i></span>
+          </div>
+          <div class="row gy-5 p-4">
+            <div class="col-12">
+              <div>
+               <h6 class="text-center">결제방법을 선택해주세요</h6>
+                <span class="text-muted" style="font-size:0.8em;">(현재는 카카오페이만 가능합니다.)</span>
+                <div class="my-2">
+                  <input type="radio" class="btn-check " name="payType" id="success-outlined" value="네이버" disabled>
+                  <label class="btn btn-outline-success" style="width:100%; font-size:0.8em;"  for="success-outlined" >네이버 페이</label>
+                </div>
+                <div  class="my-2">
+                  <input type="radio" class="btn-check" name="payType" id="warning-outlined" value="카카오" checked>
+                  <label class="btn btn-outline-warning" style="width:100%; font-size:0.8em;" for="warning-outlined">카카오 페이</label>
+                </div>
+                <div  class="my-2">
+                  <input type="radio" class="btn-check" name="payType" id="primary-outlined" value="토스" disabled>
+                  <label class="btn btn-outline-primary" style="width:100%; font-size:0.8em;" for="primary-outlined">토스 페이</label>
+                </div>
+              </div>
+             </div>
+            </div>
+            <div class="position-absolute d-flex justify-content-center w-100" style="bottom:10px; left:0px; ">
+              <button type="button" class="btn btn-primary payment" style="width:80%;">
+                <span class="fw-bold text-dark" th:text="|*{participationFee}원|">결제금액</span>
+                <span>결제하기</span>
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+
+
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1311229f8a1fc5154fa468c835cf29f0&libraries=services"></script>
+
+<script>
+var locationStreetName=$("#locationStreet").val();
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+// 지도를 생성합니다
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+// 주소로 좌표를 검색합니다
+geocoder.addressSearch(locationStreetName, function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+        });
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+    }
+});
+
+
+/*지도모달열기*/
+$(".map").click(()=>{
+  $("#map").css("top",0);
+  map.relayout();
+})
+
+/*지도모달닫기*/
+$(".kakaoMap-closeBtn").click(()=>{
+  $("#map").css("top","100%");
+
+})
+
+/*결제하기 모달열기*/
+$(".enroll").click(()=>{
+  $("#pay-modal").css("top",0);
+
+})
+
+
+/*결제하기 모달닫기*/
+$(".pay-modal-closeBtn").click(()=>{
+  $("#pay-modal").css("top","100%");
+})
+
+
+/*매치 신청하기*/
+$(".payment").click(()=>{
+  var footballSocialMatchId = $("#footballSocialMatchId").val();
+  var payType= $("input[name='payType']:checked").val();
+  var amount = $("#participationFee").val();
+  var data = JSON.stringify({
+     "footballSocialMatchId": footballSocialMatchId,
+     "payType":payType,
+     "amount":amount
+  });
+  console.log(data);
+
+  $.ajax({
+    url:"/api/payment",
+    type:"post",
+    contentType: "application/json; charset=utf-8",
+    data:data,
+    beforeSend:(xhr)=>{
+      xhr.setRequestHeader(header, token);
+      xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+    }
+
+
+  }).done(res=>{
+    console.log(res);
+    location.href=res.body.next_redirect_pc_url
+  }).fail(err=>{
+    console.log(err);
+  })
+});
+
+
+
+
+
+
+</script>
+</body>
+</html>

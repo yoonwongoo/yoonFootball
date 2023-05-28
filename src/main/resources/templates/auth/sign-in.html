@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::header"></head>
+
+<style>
+    main{
+        max-width:330px;
+        margin:auto;
+        font-size:1em;
+    }
+
+
+</style>
+<body>
+    <div class="container">
+
+        <div class="py-5 text-center">
+            <h2>login</h2>
+        </div>
+        <div class="text-center">
+
+        <main>
+          <form id="sign_in_form" >
+
+            <div class="form-floating m-1">
+              <input type="text" class="form-control" id="username" name="username" placeholder="ID">
+              <label for="username">ID</label>
+            </div>
+
+            <div class="form-floating m-1">
+              <input type="password" class="form-control" id="password" name ="password"placeholder="Password">
+              <label for="password">Password</label>
+            </div>
+
+            <div class="form-floating mt-3">
+              <button class="w-100 btn btn-lg btn-primary" id="sign_in" type="submit">로그인</button>
+            </div>
+
+          </form>
+
+            <p class="mt-5 mb-3 text-muted">아이디가 없으세요?<a href="#" th:href="@{/sign-up}"><b>회원가입하러가기</b></a></p>
+
+        </main>
+        </div>
+    </div>
+
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/auth.js"></script>
+</body>
+</html>

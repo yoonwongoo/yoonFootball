@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::header"></head>
+<link href="/css/calendar.css" rel="stylesheet" type="text/css"/>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+        <div class="py-2 text-center">
+        </div>
+        <div class="row p-2">
+            <!--left area-->
+            <div class="col-md-6 mb-2 justify-content-center">
+                <div class="calendar-bg">
+                    <table class="calendar">
+                        <thead>
+                            <tr>
+                            <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
+                            <td colspan="5">
+                            <span id="calYear"></span>년
+                            <span id="calMonth"></span>월
+                            </td>
+                            <td onClick="nextCalendar();" style="cursor:pointer;">&#62;</td>
+                            </tr>
+                            <tr>
+                                <td>일</td>
+                                <td>월</td>
+                                <td>화</td>
+                                <td>수</td>
+                                <td>목</td>
+                                <td>금</td>
+                                <td>토</td>
+                            </tr>
+                        </thead>
+
+                    <tbody>
+                    </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <!--left area end-->
+            <!--right area-->
+            <div class="col-md-6 my-3" style="max-width:800px;">
+                <th:block th:each="list :${list}" th:if="${!#lists.isEmpty(list)}">
+                    <div class="d-flex mb-1 border border-info p-1 bg-info bg-opacity-10 justify-content-between" style="width:100%; font-size:0.8em;">
+                        <div class="d-flex">
+                            <div class="mx-2">
+                                <div class="fw-bold" th:text="${list.footballSocialMatch.matchDay}">매치날짜</div>
+                                <div class="text-muted" th:text="|${list.footballSocialMatch.startTime}~${list.footballSocialMatch.endTime}|">시작,마감 시간</div>
+                            </div>
+
+                            <div class="mx-2">
+                                <div>
+                                    <span class="text-primary" th:text="구장이름"></span>
+                                    <span th:text="구장위치"></span>
+                                </div>
+                                <div>
+                                    <span class="text-warning">&bull;</span>
+                                    <span  th:text="|실력 ${list.footballSocialMatch.skillLevel.value}|"></span>
+                                    <span th:text="${list.footballSocialMatch.headCount}"></span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </th:block>
+                <th:block th:unless="${!#lists.isEmpty(list)}">
+                    <p class="text-center ">신청한 소셜매치가 없습니다</p>
+                </th:block>
+
+                <div class="my-3" th:if="${!#lists.isEmpty(list)}">
+                    <ul class="pagination pagination justify-content-center">
+
+                        <li class="page-item" th:if="${!isFirst}">
+                            <a class="page-link" th:href="@{/my-page/football-social-match-enroll/list(page=0)}"> << </a>
+                        </li>
+
+
+                    <th:block th:each="page :${#numbers.sequence(startPage,lastPage)}">
+
+                        <li class="page-item active" th:if="${page==currentPage}">
+                           <a class="page-link" th:text="${page}" th:href="@{/my-page/football-social-match-enroll/list(page=${page-1})}"></a>
+                        </li>
+
+
+                        <li class="page-item" th:if="${page!=currentPage}">
+                            <a class="page-link" th:text="${page}" th:href="@{/my-page/football-social-match-enroll/list(page=${page-1})}"></a>
+                        </li>
+                    </th:block>
+
+
+                    <li class="page-item" th:if="${!isLast}">
+                        <a class="page-link" th:href="@{/my-page/football-social-match-enroll/list(page=${totalLastPage})}"> >> </a>
+                    </li>
+
+
+                    </ul>
+                </div>
+
+            </div>
+            <!--right area end-->
+
+
+
+        </div>
+    </main>
+
+
+
+</div>
+
+
+
+<script type="text/javascript" src="/js/calendar.js"></script>
+
+</body>
+</html>

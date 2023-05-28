@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::header">
+</head><body>
+<nav th:replace="fragments/nav::nav(tab)"></nav>
+<div class="container" >
+  <main class="px-3">
+
+    <div class="row gx-0 gy-3" style="height:100%; width:100%;">
+      <div class="col-12 p-3 bg-success" style="height:100%; width:100%;">
+        <p class="text-white text-center">검색어로 궁금증을 해결해보세요</p>
+        <div>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="ex) 환불,정책...">
+        </div>
+      </div>
+
+      <div class="col-12 border-bottom">
+        <h4>카테고리</h4>
+        <div class="d-flex justify-content-between flex-wrap align-items-start w-100">
+          <a class="border my-2 text-center p-1" style="width:30%; height:100%;" th:each="category:${noticeCategory}"
+             th:text="${category.value}" th:href="@{/notices/{noticeCategory} (noticeCategory=${#strings.toLowerCase(category.name)})}"></a>
+        </div>
+      </div>
+
+
+      <div class="col-12">
+        <h4>자주하는 질문</h4>
+        <th:block th:if="${!#lists.isEmpty(noticeTop5BoardList)}" th:each="list:${noticeTop5BoardList}">
+              <div class="p-2 border-bottom my-2"style="width:100%;">
+                  <a href="#" th:href="@{/notice/{id}  (id=${list.noticeBoardId})}">
+                  <span th:text="${list.title}">게시글 제목</span>
+                  </a>
+              </div>
+
+        </th:block>
+      </div>
+    </div>
+
+
+
+
+  </main>
+</div>
+
+</body>
+</html>

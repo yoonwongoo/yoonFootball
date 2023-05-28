@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::header">
+</head>
+
+<body class="bg-light" >
+<nav th:replace="fragments/nav::nav (tab='footballBoard')"></nav>
+    <div class="container ">
+        <!--배너 부분-->
+        <div class="row justify-content-center  ">
+            <div id="carouselExampleIndicators" class="carousel slide bg-dark" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="/img/none.png"  class="d-block w-50" style="margin:0 auto;" alt="...">
+                </div>
+                <div class="carousel-item">
+                  <img src="/img/none.png"  class="d-block w-50" style="margin:0 auto;" alt="...">
+                </div>
+                <div class="carousel-item">
+                  <img src="/img/none.png" class="d-block w-50" style="margin:0 auto;" alt="...">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+        </div>
+        <!--배너 부분 끝-->
+        <!--날짜 및 선택 nav바-->
+        <div class="row justify-content-center my-2">
+            <form id="search_form">
+            <div class="col-12 d-flex justify-content-between" style="max-width:800px">
+                <div class="d-flex">
+                    <input id="matchDay" name="matchDay" class="form-control me-2" type="date" th:value="${matchDay}" th:min="${matchDay}" >
+                    <select class="form-select w-50" name="skillLevel" id="skillLevel">
+                        <option value=""> 실력 </option>
+                        <option value="high">상</option>
+                        <option value="middle">중</option>
+                        <option value="low">하</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="checkbox" class="btn-check" id="hide" name="hide" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="hide">마감제외</label><br>
+                </div>
+            </div>
+            </form>
+            <div>
+
+
+        </div>
+        <!--날짜 및 선택 nav바 끝-->
+        <div class="row justify-content-center m-2">
+            <div class="col-12" style="max-width:800px">
+                <div class="football-board-list">
+                    <th:block th:if="${footballMatchBoardList.hasContent}">
+                    <th:block  th:each="footballList : ${footballMatchBoardList}">
+                    <a th:attr="data-board_id=${footballList.footballBoardId}" th:href="@{/football-match-board/{id} (id=${footballList.footballBoardId}) }">
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title" th:text="${footballList.location}"></h5>
+                            <div class="card-text" th:text="${footballList.locationStreet}"></div>
+
+                            <span class="fw-bold" th:text="|${footballList.matchDay} /|"></span>
+                            <span th:text="|${footballList.startTime} ~|"></span>
+                            <span th:text="${footballList.endTime}"></span>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex ">
+                                <div>
+                                    <span class="text-primary  fw-bold fs-6">실력-</span>
+                                    <span class="badge bg-secondary" th:text="${footballList.skillLevel }"></span>
+                                </div>
+                                <div class="ms-1">
+                                    <span class="text-primary  fw-bold fs-6">참가비-</span>
+                                    <th:block th:if="${footballList.participationFee == 0}">
+                                    <span class="badge bg-secondary">무료</span>
+                                    </th:block>
+
+                                    <th:block th:unless="${footballList.participationFee == 0}">
+                                    <span class="badge bg-secondary" th:text="|${footballList.participationFee}원|"></span>
+                                    </th:block>
+                                </div>
+                                </div>
+
+                                <div class="me-1">
+                                     <th:block th:if="${footballList.isRecruitment}">
+                                     <div class="badge bg-primary">모집중</div>
+                                     </th:block>
+
+                                     <th:block th:unless="${footballList.isRecruitment}">
+                                     <div class="badge bg-secondary">마감</div>
+                                     </th:block>
+                                 </div>
+
+
+                            </div>
+                          </div>
+                        </div>
+                    </a>
+                    </th:block>
+                    </th:block>
+                    <th:block th:unless="${footballMatchBoardList.hasContent}">
+                        <p class="text-center">등록된 글이 없습니다</p>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <th:block th:if="${footballMatchBoardList.hasNext}">
+        <div class="row m-2">
+            <div class="col-12 d-flex justify-content-center">
+                 <button type="button" class="btn btn-primary" id="more_list">더 보기</button>
+            </div>
+        </div>
+        </th:block>
+        </div>
+
+    </div>
+
+        <div class="position-fixed"  style="right:10px; bottom:10px;" >
+           <a class="bg-dark rounded-circle position-relative" style="width:50px; height:50px;" th:href="@{/football-match-board}">
+               <i class="fa-solid fa-pen position-absolute" style="color:white; right:35%; top:35%;"></i>
+           </a>
+
+       </div>
+<script text="text/javascript" src="/js/footballMatchBoardList.js"></script>
+</body>
+</html>

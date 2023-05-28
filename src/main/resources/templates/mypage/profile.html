@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header.html::header"></head>
+
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="alert alert-success w-100 position-fixed" role="alert" style="display:none; top:0;">
+    <span id="alert-message"></span>
+</div>
+<div class="container">
+  <main>
+      <div class="py-3 text-center">
+            <h2>내 프로필</h2>
+      </div>
+
+
+      <div class="row justify-content-center">
+
+          <div class="col-12" style="max-width:600px; margin-bottom:100px;">
+
+
+              <form class="profile_form"  th:object="${profile}">
+
+                  <div class="mt-1 mx-1 d-flex justify-content-center">
+                      <div class="profile_img_box" style="width: 162px; height: 162px;">
+                          <img id="profile_img" th:src="@{/upload/{image} (image=*{image})}" th:onError="this.src='/img/none.png'" class="rounded-circle h-100 w-100" style=" object-fit: cover;">
+                      </div>
+                      <input type="file" name="image" class="d-none" id="image"/>
+
+                  </div>
+
+                  <div class="mt-1 mx-1">
+                    <label for="nickName" class="form-label" _msthash="2296580" _msttexthash="49286185">닉네임 <span class="text-muted" _istranslated="1">(선택 사항)</span></label>
+                    <input type="email" class="form-control "  name="nickName"id="nickName"  th:field="*{nickName}" placeholder="닉네임을 작성해주세요">
+                    <div class="error text-danger" id="nickName-err"></div>
+                  </div>
+
+
+                  <div class="mt-1 mx-1">
+                    <label for="intro" class="form-label" _msthash="2296333" _msttexthash="29184064">내 소개</label>
+                    <input type="text" class="form-control" name="intro" id="intro" th:field="*{intro}" placeholder="간단한 자기소개 해주세요">
+                    <div class="error text-danger" id="intro-err"></div>
+                  </div>
+
+                  <div class="mt-1">
+                     <label class="form-label">성별</label>
+                     <div class="d-flex">
+                         <th:block th:each="gender,stat :${gender}">
+                             <input type="radio" class="btn-check" name="gender" th:id="gender-check+${stat.count}" th:value=${gender.name} autocomplete="off" th:field="*{gender}" >
+                             <label class="btn btn-outline-secondary w-100 me-1 p-2" th:for="gender-check+${stat.count}" th:text="${gender.value}"></label>
+
+                         </th:block>
+
+                     </div>
+                     <div class="error text-danger" id="gender-err"></div>
+                 </div>
+
+
+                  <div class="mt-1">
+                     <label class="form-label">나의 실력</label>
+
+                         <div class="d-flex">
+                           <th:block th:each="skill, stat:${skillLevel}">
+                           <input type="radio" class="btn-check" name="skillLevel" th:id="skill-check+${stat.count}" th:value="${skill.name}" autocomplete="off" th:field="*{skillLevel}"  >
+                           <label class="btn btn-outline-secondary w-100 m-1" th:for="skill-check+${stat.count}" th:text="${skill.value}"></label>
+                           </th:block>
+                         </div>
+
+                     <div class="error text-danger" id="skillLevel-err"></div>
+                  </div>
+
+
+                  <div class="mt-1 ">
+                     <label class="form-label">선호하는 포지션</label>
+
+                     <div class="d-flex">
+                         <th:block th:each="position, stat:${preferPosition}">
+                         <input type="radio" class="btn-check" name="preferPosition" th:id="position-check+${stat.count}" th:value="${position.name}"autocomplete="off" th:field="*{preferPosition}" >
+                         <label class="btn btn-outline-secondary w-100 me-1  " th:for="position-check+${stat.count}" th:text="${position.value}"></label>
+
+                         </th:block>
+                     </div>
+                     <div class="error text-danger" id="preferPosition-err"></div>
+                  </div>
+              </form>
+          </div>
+
+          <footer class="col-12 position-fixed w-100 bg-white p-3 " style="bottom:0px;">
+              <button class="btn btn-primary w-100" id="modify_profile">수정하기</button>
+          </footer>
+      </div>
+
+  </main>
+</div>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/member.js"></script>
+</body>
+</html>

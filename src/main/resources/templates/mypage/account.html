@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::header"></head>
+<body class="bg-light">
+
+<div class="container">
+  <main>
+      <div class="py-3 text-center">
+            <h2>내 계정</h2>
+      </div>
+
+
+      <div class="row row-cols-sm-2">
+
+          <div class="col-sm-5 mb-5 px-5 order-1">
+              <div th:replace="fragments/my-page-sidebar.html::my-page-sidebar(side='account')"></div>
+          </div>
+
+          <div class="col-sm-7 mb-5 px-5 order-2">
+              <form class="account_form"  th:object="${member}">
+
+                  <div class="col-12 mt-1">
+                    <label for="username" class="form-label" _msthash="2296580" _msttexthash="49286185">아이디</label>
+                    <input type="email" class="form-control" id="username" disabled th:field="*{username}">
+                  </div>
+
+
+                  <div class="col-12 mt-1">
+                    <label for="name" class="form-label" _msthash="2296333" _msttexthash="29184064">이름</label>
+                      <input type="text" class="form-control" id="name"  disabled th:field="*{name}">
+                    <div class="error text-danger" id="password_err"></div>
+                  </div>
+
+                  <div class="col-12 mt-1">
+                    <label for="email" class="form-label" _msthash="2296333" _msttexthash="29184064">이메일</label>
+                    <div class="input-group has-validation">
+                      <span class="input-group-text">@</span>
+                      <input type="text" class="form-control" id="email" th:field="*{email}" readonly="true">
+                    </div>
+                  </div>
+
+
+                  <div class="col-12 mt-1">
+                    <label for="address" class="form-label" _msthash="2296827" _msttexthash="9835124">가입일자</label>
+                    <input type="text" class="form-control" id="address" required="" th:field="*{createdDate}" readonly="true">
+
+                  </div>
+              </form>
+          </div>
+      </div>
+  </main>
+</div>
+</body>
+</html>

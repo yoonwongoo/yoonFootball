@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header.html::header"></head>
+<style>
+    .menu-name::after {
+        font-family:FontAwesome;
+        content:"\f054";
+        position:absolute;
+        right:30px;
+    }
+
+
+</style>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+
+        <div class="py-3 text-center">
+            <h2>MY PAGE</h2>
+        </div>
+
+    <!-- 프로필영역-->
+        <div class="profile-area border p-3" style="max-width:600px; margin:0 auto;">
+            <div class="profile d-flex flex-wrap">
+                <div class="profile-left d-flex flex-fill flex-column align-items-center" >
+
+                    <div class="name">
+                        <b th:text="${member.name}">name</b>
+                        <span>님 반갑습니다</span>
+                    </div>
+
+                    <div class="email">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span  th:text="${member.email}">email</span>
+                    </div>
+
+
+                    <div class="profile-btn-area d-flex">
+                        <a class="btn btn-warning btn-sm m-1" th:href="@{/my-page/profile}">내 프로필</a>
+                        <button type="button" class="btn btn-warning btn-sm m-1 logout">로그아웃</button>
+                    </div>
+                </div>
+
+                <div class="profile-right d-flex flex-fill flex-column align-items-center">
+                    <div>내가 한 경기 개수</div>
+                    <div>내가 한 경기 개수</div>
+                </div>
+            </div>
+        </div>
+   <!-- 프로필영역 끝-->
+
+
+    <!-- 메뉴 영역-->
+        <div class="menu-area mt-4 mb-4" style="max-width:600px; margin:0 auto;">
+           <div class="menu d-flex flex-column position-relative" >
+
+                <a class="d-flex align-items-center border p-2" th:href="@{/my-page/account}">
+                    <i class="fa-solid fa-user "></i>
+                    <span class="menu-name ms-2">내 계정 설정</span>
+                </a>
+
+                <a class="d-flex align-items-center border p-2" th:href="@{/notices}">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span class="menu-name ms-2">공지사항</span>
+                </a>
+
+                <a class="d-flex align-items-center border p-2" >
+                    <i class="fa-solid fa-user "></i>
+                    <span class="menu-name ms-2">블랙리스트</span>
+                </a>
+                <a class="d-flex align-items-center border p-2" th:href="@{/my-page/football-social-match-enroll/list}" >
+                    <i class="fa-regular fa-handshake"></i>
+                    <span class="menu-name ms-2">나의 소셜매치</span>
+                 </a>
+
+                <a class="d-flex align-items-center border p-2" th:href="@{/my-page/football-match-board}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span class="menu-name ms-2">내가 쓴 글</span>
+                </a>
+
+                <a class="d-flex align-items-center border p-2" th:href="@{/notices/event}">
+                    <i class="fa-solid fa-user "></i>
+                    <span class="menu-name ms-2">이벤트</span>
+                </a>
+
+           </div>
+        </div>
+
+    <!-- 메뉴 영역 끝-->
+    </main>
+
+</div>
+<script type="text/javascript">
+$(function(){
+
+$(".logout").click(function(){
+    var token=$("meta[name=_csrf_token]").attr("content");
+    var header=$("meta[name=_csrf_header]").attr("content");
+
+    $.ajax({
+        url:"/api/logout",
+        type:"post",
+        beforeSend:function(xhr){
+            xhr.setRequestHeader(header,token);
+        }
+
+    }).done(res=>{
+        if(res.body.status=="OK"){
+            alert("로그아웃되었습니다");
+            location.href="/sign-in";
+        }
+
+    }).fail(err=>{
+        alert("일시적인 오류 발생");
+        location.href="/sign-in";
+    })
+});
+
+
+
+});
+
+</script>
+
+</body>
+</html>

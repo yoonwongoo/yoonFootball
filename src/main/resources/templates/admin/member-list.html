@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header.html::header"></head>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="py-3 text-center">
+               <h2>회원관리</h2>
+        </div>
+        <div class="col-12 my-3" style="max-width:800px;">
+
+            <th:block th:if="${#lists.isEmpty(memberList)}" >
+                <div class="memberList-box">
+                    <p>등록된 회원이 없습니다</p>
+                </div>
+            </th:block>
+
+            <th:block th:unless="${#lists.isEmpty(memberList)}" th:each="list :${memberList}">
+
+                <div class="memberList-box border-bottom p-2 d-flex w-100 justify-content-between flex-wrap">
+                    <div>
+                        <div>
+                            <span class="text-muted">회원 아이디:</span>
+                            <span th:text="${list.username}"></span>
+                        </div>
+                        <div>
+                            <span class="text-muted">회원 이름:</span>
+                            <span th:text="${list.name}"></span>
+                        </div>
+                        <div>
+                            <span class="text-muted">회원 이메일:</span>
+                            <span th:text="${list.email}"></span>
+                        </div>
+                    </div>
+                    <div class="d-flex  align-items-center">
+                        <button class="btn btn-primary m-1">자세히</button>
+                        <button class="btn btn-primary m-1">회원탈퇴</button>
+                        <button class="btn btn-primary m-1">회원수정</button>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+        <div class="col-12 my-3">
+            <ul class="pagination pagination justify-content-center">
+
+                <li class="page-item" th:if="${!isFirst}">
+                 <a class="page-link" th:href="@{/admin/member(page=0)}"> << </a>
+                </li>
+
+
+                <th:block th:each="page :${#numbers.sequence(startPage,lastPage)}">
+
+                <li class="page-item active" th:if="${page == currentPage}">
+                 <a class="page-link" th:text="${page}" th:href="@{/admin/member(page=${page-1})}"></a>
+                </li>
+
+
+                <li class="page-item" th:unless="${page == currentPage}">
+                 <a class="page-link" th:text="${page}" th:href="@{/admin/member(page=${page-1})}"></a>
+                </li>
+                </th:block>
+
+
+                <li class="page-item" th:if="${!isLast}">
+                 <a class="page-link" th:href="@{/admin/member(page=${totalLastPage})}"> >> </a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

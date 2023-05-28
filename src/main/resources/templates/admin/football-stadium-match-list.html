@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::header">
+</head>
+
+<body class="bg-light" >
+<nav th:replace="fragments/nav::nav(tab)"></nav>
+    <div class="container ">
+
+
+        <div class="row justify-content-center my-2 p-4">
+            <div class="col-12 d-flex my-2">
+                <form class="search_form" th:action="@{/admin/football-match/list}" th:method="get">
+                    <div class="d-flex">
+                        <input id="matchDay" name="matchDay" class="form-control me-2" type="date" th:value="${matchDay}" >
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-12 my-2">
+                <th:block th:unless="${#lists.isEmpty(footballStadiumMatchList)}" th:each="list :${footballStadiumMatchList}">
+                <div class="footballStadium-list border mb-3">
+                    <div class="footballStadium-image border" style="width:100%; height:200px;">
+                        <img th:src="@{/upload/{url} (url=${list.stadiumImageUrl})}" class="card-img-top w-100 h-100" style="object-fit: contain" />
+                    </div>
+
+                    <div class="footballStadium-body p-2">
+                        <h5 th:text="${list.stadiumName}"></h5>
+                        <p th:text="${list.location}"></p>
+                    </div>
+
+                    <div class="footballSocial p-2">
+                        <div>
+                            <h4>매치 등록 가능시간</h4>
+                        </div>
+
+
+                        <div class="d-flex flex-wrap w-100">
+                            <th:block th:each=" matchTime:${list.footballSocialMatchList}">
+                                <a class="badge bg-info m-1" th:text="${matchTime}" th:href="@{/admin/football-social-match(matchDay=${matchDay},startTime=${matchTime},footballStadiumId=${list.footballStadiumId})}"></a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                </div>
+                </th:block>
+
+
+
+                <th:block th:if="${#lists.isEmpty(footballStadiumMatchList)}">
+                <div class="footballStadium-list  mb-3">
+                    <div class="text-center">
+                        <div class="card">
+                          <div class="card-body">
+                              <span>등록된 구장이 없습니다</span>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                </th:block>
+
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+<script>
+
+    $("#matchDay").change(()=>{
+        $(".search_form").submit();
+    })
+</script>
+</body>
+</html>

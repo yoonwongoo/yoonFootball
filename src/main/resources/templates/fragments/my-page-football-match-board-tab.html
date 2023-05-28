@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <div class="col-12" th:fragment="my-page-football-match-board-tab (tab)" style="max-width:800px;">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/my-page/football-match-board}" th:classappend="${tab =='footballMatchBoard'} ? active">내가 쓴 글</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/my-page/football-match-board/reply}" th:classappend="${tab=='footballMatchBoardReply'} ? active">내가 단 댓글</a>
+            </li>
+
+        </ul>
+    </div>
+
+</html>

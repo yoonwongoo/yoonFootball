@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html::header">
+
+</head>
+<body class="bg-light">
+
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+
+        <div class="py-3 text-center">
+            <h2>경기 모집 글 수정하기</h2>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12" style="max-width:600px; margin-bottom:100px;">
+                <form class="football_match_board_modify_form" th:object="${footballMatchBoard}">
+                <input type="hidden" th:id="footballMatchBoardId" name="footballMatchBoardId" th:value="*{id}">
+
+                <div class="mt-1 mx-1">
+                    <label for="location" class="form-label" _msthash="2296580" _msttexthash="49286185">위치</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="location" name="location" th:value="*{location}" placeholder="위치를 검색해주세요"  readonly="true">
+                        <input type="hidden" id="locationStreet" name="locationStreet" th:value="*{locationStreet}">
+                        <button class="btn btn-outline-secondary" type="button" id="kakaoMapSearch-openBtn">주소 검색</button>
+                    </div>
+                    <div class="error text-danger" id="location-err"></div>
+                </div>
+
+                <div class="mt-1 mx-1">
+                    <label for="matchDay" class="form-label" _msthash="2296580" _msttexthash="49286185">경기 날짜</label>
+                    <input type="date" class="form-control " name="matchDay" id="matchDay" th:value="*{matchDay}">
+                </div>
+
+                <div class="row mt-2 mx-1" >
+                    <div class="col-6 p-0 ">
+                        <label for="startTime" class="form-label" _msthash="2296580" _msttexthash="49286185">경기 시작시간</label>
+                        <input type="time" class="form-control" id="startTime" name="startTime" th:value="*{startTime}">
+                    </div>
+                    <div class="col-6 p-0">
+                        <label for="endTime" class="form-label" _msthash="2296580" _msttexthash="49286185">경기 마감시간</label>
+                        <input type="time" class="form-control" id="endTime" name="endTime" th:value="*{endTime}" >
+                    </div>
+                </div>
+                <div class="mt-1 mx-1">
+                      <label for="content" class="form-label">내용</label>
+                      <textarea class="form-control" id="content" name="content" rows="3" placeholder="내용을 자세히 기재해주세요."
+                                cols="3" th:text="*{content}"  ></textarea>
+                </div>
+
+                <div class="mt-1 mx-1">
+                    <label for="participationFee" class="form-label">참가비용</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="participationFee" name="participationFee" th:value="*{participationFee}"  placeholder="참가비용을 입력해주세요. 없으면 '0'입력해주세요">
+                        <span class="input-group-text">원</span>
+                    </div>
+               </div>
+                <div class="mt-1 mx-1">
+                    <label class="form-label">실력 <span class="text-muted" _istranslated="1">(전체적인 실력을 선택해주세요)</span></label>
+                    <th:block th:each="skill,stat : ${skillLevel}">
+                        <input type="radio" class="btn-check" name="skillLevel" th:id="skill-check+${stat.count}" th:value="${skill.name}"
+                             th:field="*{skillLevel}"  autocomplete="off">
+                        <label class="btn btn-outline-secondary w-100 m-1" th:for="skill-check+${stat.count}" th:text="${skill.value}" ></label>
+                    </th:block>
+
+                </div>
+
+
+                </form>
+            </div>
+            <footer class="col-12 position-fixed w-100 bg-white p-3 " style="bottom:0px; left:0px;">
+                <button class="btn btn-primary w-100" id="football_match_modify_board">수정하기</button>
+            </footer>
+        </div>
+
+
+
+    </main>
+
+    <th:block th:replace="fragments/kakao-map-search.html::kakao-map-search"></th:block>
+
+</div>
+
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/footballMatchBoard.js"></script>
+
+</body>
+</html>

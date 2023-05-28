@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::header"></head>
+<body class="bg-light">
+<nav th:replace="fragments/nav.html::nav(tab)></nav>
+
+<div class="container">
+  <main>
+      <div class="py-3 text-center">
+            <h2>알림 설정</h2>
+      </div>
+
+
+      <div class="row row-cols-sm-2">
+
+          <div class="col-sm-5 mb-5 px-5 order-1">
+              <div th:replace="fragments/my-page-sidebar.html::my-page-sidebar(side='notification')"></div>
+          </div>
+
+          <div class="col-sm-7 mb-5 px-5 order-2" >
+              <form class="notification_form" th:object="${notificationSetting}">
+
+                  <div class="col-12 mt-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" th:field="*{footballMatchBoardReplyByWeb}"  type="checkbox"  >
+                        <label class="form-check-label" >내 게시글 댓글 알림</label>
+                      </div>
+                  </div>
+
+                  <div class="col-12 mt-3">
+                       <div class="form-check form-switch">
+                         <input class="form-check-input" th:field="*{footballMatchBoardUpdateByWeb}" id="footballMatchBoardUpdateByWeb"type="checkbox" >
+                         <label class="form-check-label" for="footballMatchBoardUpdateByWeb" >게시글 수정 알림</label>
+                       </div>
+                   </div>
+
+
+
+              </form>
+          </div>
+
+
+      </div>
+
+  </main>
+</div>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/member.js"></script>
+</body>
+</html>

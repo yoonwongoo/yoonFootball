@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html::header">
+
+</head>
+<body class="bg-light">
+
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+
+        <div class="py-3 text-center">
+            <h2>소셜매치 등록</h2>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12" style="max-width:600px; margin-bottom:100px;">
+                <form class="football_social_match_form">
+
+                <input type="hidden" name="footballStadiumId" id="footballStadiumId" th:value="${responseForm.footballStadiumId}">
+
+                <div class="mt-1 mx-1">
+                    <label for="matchDay" class="form-label" _msthash="2296580" _msttexthash="49286185">경기 날짜</label>
+                    <input type="date" class="form-control" readonly="true"  name="matchDay" id="matchDay"  th:value="${responseForm.matchDay}">
+                </div>
+
+                <div class="row mt-2 mx-1" >
+                    <div class="col-6 p-0 ">
+                        <label for="startTime" class="form-label" _msthash="2296580" _msttexthash="49286185">경기 시작시간</label>
+                        <input type="time" class="form-control" readonly="true"  id="startTime" name="startTime" th:value="${responseForm.startTime}">
+                    </div>
+                    <div class="col-6 p-0">
+                        <label for="endTime" class="form-label" _msthash="2296580" _msttexthash="49286185">경기 마감시간</label>
+                        <input type="time" class="form-control" readonly="true"   id="endTime" name="endTime" th:value="${responseForm.endTime}">
+                    </div>
+                </div>
+                <div class="mt-1 mx-1">
+                    <label for="headCount" class="form-label">매치 참가인원 수</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" min="2" max="12" id="headCount" name="headCount" placeholder="참가인원 수를 입력해주세요.">
+                        <span class="input-group-text">명</span>
+                    </div>
+                </div>
+
+
+                <div class="mt-1 mx-1">
+                      <label for="content" class="form-label">매치 안내사항</label>
+                      <textarea class="form-control" id="content" name="content" rows="3" cols="3" placeholder="내용을 자세히 기재해주세요."></textarea>
+                </div>
+
+                <div class="mt-1 mx-1">
+                    <label for="participationFee" class="form-label">매치참가비용</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="participationFee" name="participationFee" placeholder="참가비용을 입력해주세요. 없으면 '0'입력해주세요">
+                        <span class="input-group-text">원</span>
+                    </div>
+               </div>
+
+
+                <div class="mt-1 mx-1">
+                    <label class="form-label">실력 <span class="text-muted" _istranslated="1">(매치의 실력을 선택해주세요)</span></label>
+                    <th:block th:each="skill,stat : ${skillLevel}">
+                        <input type="radio" class="btn-check" name="skillLevel" th:id="skill-check+${stat.count}" th:value="${skill.name}" autocomplete="off">
+                        <label class="btn btn-outline-secondary w-100 m-1" th:for="skill-check+${stat.count}" th:text="${skill.value}"></label>
+                    </th:block>
+
+                </div>
+
+
+                </form>
+            </div>
+            <footer class="col-12 position-fixed w-100 bg-white p-3 " style="bottom:0px; left:0px;">
+                <button class="btn btn-primary w-100" id="enroll_football_social_match">매치등록하기</button>
+            </footer>
+        </div>
+
+
+
+    </main>
+
+
+</div>
+
+<script type="text/javascript" src="/js/common.js"></script>
+<script>
+    /*소셜매치 등록하기*/
+    $("#enroll_football_social_match").click(()=>{
+        let form =JSON.stringify($(".football_social_match_form").serializeObject());
+
+
+        $.ajax({
+            url:"/api/admin/football-social-match",
+            type:"post",
+            contentType:"application/json; charset=utf-8",
+            data:form,
+            beforeSend:(xhr)=>{
+                xhr.setRequestHeader(header,token);
+                xhr.setRequestHeader("Accept","application/json; charset=utf-8");
+            }
+
+        }).done(res=>{
+            console.log(res);
+
+        }).fail(err=>{
+            console.log(err);
+
+        })
+        console.log(form);
+
+
+    })
+</script>
+</body>
+</html>

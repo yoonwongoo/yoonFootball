@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html::header">
+
+</head>
+<body class="bg-light">
+
+<nav th:replace="fragments/nav.html::nav(tab)"></nav>
+<div class="container">
+    <main>
+
+        <div class="py-3 text-center">
+            <h2>공지 등록</h2>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12" style="max-width:600px; margin-bottom:100px;">
+                <form class="notice_board_form">
+
+                <div class="mt-1 mx-1">
+                    <label for="noticeCategory" class="form-label" _msthash="2296580" _msttexthash="49286185">카테고리</label>
+
+                    <select class="form-select"  name="noticeCategory" id="noticeCategory" >
+                      <option th:each="list:${noticeCategory}"th:value="${list.name}" th:text="${list.value}">
+                      </option>
+                    </select>
+                </div>
+
+                <div class="mt-1 mx-1">
+                    <label for="title" class="form-label" _msthash="2296580" _msttexthash="49286185">제목</label>
+                    <input type="text" class="form-control " name="title" id="title" >
+                </div>
+
+                <div class="mt-1 mx-1">
+                      <label for="content" class="form-label">내용</label>
+                      <textarea class="form-control" id="content" name="content" rows="5" cols="3" placeholder="내용을 자세히 기재해주세요."></textarea>
+                </div>
+
+                </form>
+            </div>
+            <footer class="col-12 position-fixed w-100 bg-white p-3 " style="bottom:0px; left:0px;">
+                <button class="btn btn-primary w-100" id="write_notice_board">작성하기</button>
+            </footer>
+        </div>
+
+
+
+    </main>
+
+
+</div>
+
+<script type="text/javascript" src="/js/common.js"></script>
+<script>
+    /*공지사항 등록하기*/
+    $("#write_notice_board").click(()=>{
+
+        let form =JSON.stringify($(".notice_board_form").serializeObject());
+        console.log(form);
+        $.ajax({
+            url:"/api/admin/notice",
+            type:"post",
+            contentType:"application/json; charset=utf-8",
+            data:form,
+            beforeSend:(xhr)=>{
+                xhr.setRequestHeader(header,token);
+                xhr.setRequestHeader("Accept","application/json");
+            }
+        }).done(res=>{
+            console.log(res);
+        }).fail(err=>{
+            console.log(err);
+
+        })
+
+    })
+
+
+</script>
+</body>
+</html>
